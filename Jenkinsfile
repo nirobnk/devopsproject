@@ -3,8 +3,8 @@ pipeline {
 
     environment {
         DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials')
-        FRONTEND_IMAGE = "nirobnk/devops-frontend"
-        BACKEND_IMAGE = "nirobnk/devops-backend"
+        FRONTEND_IMAGE = "niroz14/devops-frontend"
+        BACKEND_IMAGE = "niroz14/devops-backend"
     }
 
     stages {
