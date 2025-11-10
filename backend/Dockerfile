@@ -1,13 +1,13 @@
-# Use a smaller runtime image
-FROM openjdk:17-jdk-slim
+# Use Eclipse Temurin instead of deprecated OpenJDK
+FROM eclipse-temurin:17-jdk-slim
 
 WORKDIR /app
 
-# Copy the built JAR file
-COPY target/*.jar app.jar
+# Copy the JAR file
+COPY target/employee-0.0.1-SNAPSHOT.jar app.jar
 
-# Expose the app port
+# Expose port
 EXPOSE 8080
 
-# Run the Spring Boot JAR
+# Run the application
 ENTRYPOINT ["java", "-jar", "app.jar"]

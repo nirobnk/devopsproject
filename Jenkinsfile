@@ -34,11 +34,9 @@ pipeline {
         stage('Push to Docker Hub') {
             steps {
                 script {
-                    withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'USER', passwordVariable: 'PASS')]) {
-                        sh "echo $PASS | docker login -u $USER --password-stdin"
-                        sh 'docker push $FRONTEND_IMAGE:latest'
-                        sh 'docker push $BACKEND_IMAGE:latest'
-                    }
+                    sh "echo \$DOCKERHUB_CREDENTIALS_PSW | docker login -u \$DOCKERHUB_CREDENTIALS_USR --password-stdin"
+                    sh 'docker push $FRONTEND_IMAGE:latest'
+                    sh 'docker push $BACKEND_IMAGE:latest'
                 }
             }
         }
@@ -46,7 +44,15 @@ pipeline {
 
     post {
         always {
-            sh 'docker logout'
+            script {
+                sh 'docker logout || true'
+            }
+        }
+        success {
+            echo 'Pipeline completed successfully!'
+        }
+        failure {
+            echo 'Pipeline failed. Check the logs for details.'
         }
     }
 }
