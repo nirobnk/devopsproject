@@ -8,7 +8,11 @@ function Dashboard() {
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
-        const response = await fetch("http://localhost:8080/api/employees");
+        const response = await fetch("http://localhost:8080/api/v1/employee", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
         const data = await response.json();
         setEmployees(data); // ✅ Don't forget to set state
       } catch (error) {
@@ -20,13 +24,23 @@ function Dashboard() {
 
   const handleDelete = async (employeeId) => {
     try {
-      const response = await fetch(`http://localhost:8080/api/${employeeId}`, {
-        method: "Delete",
-      });
-      if(response.ok){
-        setEmployees((prevEmployees)=> //react usually set reference of latest state to the function argument use in Set method in useState
-        //so preEmployee point to the employees in useState
-        prevEmployees.filter(emp=>emp.id != employeeId))//in filter method use callback function to get boolean value if it is true it store value in new array otherwise it exclude the value 
+      const response = await fetch(
+        `http://localhost:8080/api/v1/employee/${employeeId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          method: "DELETE",
+        }
+      );
+      if (response.ok) {
+        setEmployees(
+          (
+            prevEmployees //react usually set reference of latest state to the function argument use in Set method in useState
+          ) =>
+            //so preEmployee point to the employees in useState
+            prevEmployees.filter((emp) => emp.id != employeeId)
+        ); //in filter method use callback function to get boolean value if it is true it store value in new array otherwise it exclude the value
         //callback function usually return true or false
       }
       //setEmployees(employees.filter(emp => emp.id !== employeeId)); this is direct method it not suitable for used cuz it makes some bugs sometimes
@@ -36,9 +50,9 @@ function Dashboard() {
     }
   };
 
-  const handleUpdate = (employeeId)=>{
+  const handleUpdate = (employeeId) => {
     navigate(`/employee/${employeeId}`);
-  }
+  };
 
   return (
     <div className="min-h-screen bg-gray-100 p-6">
@@ -67,13 +81,15 @@ function Dashboard() {
             <div className="text-gray-600">{employee.department}</div>
             <div className="flex gap-2">
               <button
-              onClick={()=>handleUpdate(employee.id)}
-               className="px-3 py-1 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition">
+                onClick={() => handleUpdate(employee.id)}
+                className="px-3 py-1 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
+              >
                 Update
               </button>
               <button
-              onClick={()=>handleDelete(employee.id)}
-               className="px-3 py-1 bg-red-500 text-white rounded-lg hover:bg-red-600 transition">
+                onClick={() => handleDelete(employee.id)}
+                className="px-3 py-1 bg-red-500 text-white rounded-lg hover:bg-red-600 transition"
+              >
                 Delete
               </button>
             </div>

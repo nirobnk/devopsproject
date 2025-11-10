@@ -22,15 +22,34 @@ function PostUser() {
     e.preventDefault();
     console.log("Submitted Data:", formData);
 
+    const token = localStorage.getItem("token");
+    console.log("Token from localStorage:", token);
+
+    if (!token) {
+      alert("No authentication token found. Please login first.");
+      navigate("/login");
+      return;
+    }
+
     try {
-      const response = await fetch("http://localhost:8080/api/employee", {
+      const response = await fetch("http://localhost:8080/api/v1/employee", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify(formData),
       });
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("Error:", errorText);
+        alert("Error creating employee");
+        return;
+      }
+
       const data = await response.json();
-      console.log("Employee created : ", data);
-      navigate("/");
+      console.log("Employee created:", data);
+      navigate("/dashboard");
     } catch (error) {
       console.log("Error creating employee: ", error.message);
     }

@@ -1,10 +1,8 @@
 package com.niroz.employee.entity;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
@@ -30,4 +28,9 @@ public class Employee {
 
     @NotBlank(message = "Department is required")
     private String department;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = true) // foreign key column - nullable for now
+    @JsonIgnoreProperties({"employees", "password"}) // Prevent circular reference and hide password
+    private User user;
 }

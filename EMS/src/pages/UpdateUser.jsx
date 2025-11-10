@@ -23,7 +23,12 @@ function UpdateUser() {
     const fetchEmployee = async () => {
       try {
         const response = await fetch(
-          `http://localhost:8080/api/employee/${id}`
+          `http://localhost:8080/api/v1/employee/${id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
         );
         const data = await response.json();
         setFormData(data);
@@ -38,27 +43,32 @@ function UpdateUser() {
     e.preventDefault();
 
     try {
-      const response = await fetch(`http://localhost:8080/api/employee/${id}`, {
-        method: "PATCH",
-        headers: {
-          "content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-      const data = response.json();
+      const response = await fetch(
+        `http://localhost:8080/api/v1/employee/${id}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          body: JSON.stringify(formData),
+        }
+      );
+      const data = await response.json();
       console.log("User updated: ", data);
 
-      navigate("/");
+      navigate("/dashboard");
     } catch (error) {
-        console.error("Error updating user: ",error.message);
+      console.error("Error updating user: ", error.message);
     }
   };
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
       <form
-      onSubmit={handleSubmit}
-       className="bg-white p-6 rounded-2xl shadow-lg w-full max-w-md">
+        onSubmit={handleSubmit}
+        className="bg-white p-6 rounded-2xl shadow-lg w-full max-w-md"
+      >
         <h2 className="text-2xl font-semibold mb-4 text-center">
           Edit Employee
         </h2>

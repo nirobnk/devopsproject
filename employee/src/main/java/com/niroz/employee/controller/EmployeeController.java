@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/v1/employee")
 @CrossOrigin("*")
 public class EmployeeController {
 
@@ -23,12 +23,12 @@ public class EmployeeController {
         this.employeeService = employeeService;
     }
 
-    @PostMapping("/employee")
+    @PostMapping
     public Employee postEmployee(@RequestBody Employee employee){
         return employeeService.postEmployee(employee);
     }
 
-    @GetMapping("/employees")
+    @GetMapping
     public List<Employee> getAllEmployees(){
         return employeeService.getAllEmployees();
     }
@@ -47,14 +47,14 @@ public class EmployeeController {
         }
     }
 
-    @GetMapping("/employee/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<?> getEmployeeById(@PathVariable Long id){
         Employee employee = employeeService.getEmployeeById(id);
         if (employee == null) return ResponseEntity.notFound().build();
         return ResponseEntity.ok(employee);
     }
 
-    @PatchMapping("/employee/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<?> updateEmployee(@PathVariable Long id,@RequestBody Employee employee){
         Employee updatedEmployee = employeeService.updateEmployee(id,employee);
 
