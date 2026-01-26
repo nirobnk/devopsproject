@@ -11,7 +11,10 @@ pipeline {
 
         stage('Verify Docker') {
             steps {
-                sh 'docker --version'
+                sh '''
+                docker --version
+                docker buildx version
+                '''
             }
         }
 
@@ -30,21 +33,30 @@ pipeline {
             }
         }
 
-        stage('Build Docker Images') {
-            steps {
-                sh 'docker build -t $FRONTEND_IMAGE:latest ./frontend'
-                sh 'docker build -t $BACKEND_IMAGE:latest ./backend'
-            }
-        }
-
-        stage('Push to Docker Hub') {
+        stage('Build & Push amd64 Docker Images') {
             steps {
                 sh '''
+                docker buildx create \
+                  --name amd64builder \
+                  --driver docker-container \
+                  --use || docker buildx use amd64builder
+
+                docker buildx inspect --bootstrap
+
                 echo $DOCKERHUB_CREDENTIALS_PSW | docker login \
                   -u $DOCKERHUB_CREDENTIALS_USR --password-stdin
 
-                docker push $FRONTEND_IMAGE:latest
-                docker push $BACKEND_IMAGE:latest
+                docker buildx build \
+                  --platform linux/amd64 \
+                  -t $BACKEND_IMAGE:latest \
+                  ./backend \
+                  --push
+
+                docker buildx build \
+                  --platform linux/amd64 \
+                  -t $FRONTEND_IMAGE:latest \
+                  ./frontend \
+                  --push
                 '''
             }
         }
