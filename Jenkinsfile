@@ -4,8 +4,7 @@ pipeline {
         DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials')
         FRONTEND_IMAGE = "niroz14/devops-frontend"
         BACKEND_IMAGE  = "niroz14/devops-backend"
-        // Add Docker to PATH - use $PATH instead of ${env.PATH}
-        PATH = "/usr/local/bin:$PATH"
+        //PATH = "/usr/local/bin:$PATH"
     }
     stages {
         stage('Verify Docker') {
