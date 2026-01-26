@@ -1,17 +1,23 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'docker:26.1.0'
+            args '-v /var/run/docker.sock:/var/run/docker.sock'
+        }
+    }
 
     environment {
         DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials')
         FRONTEND_IMAGE = "niroz14/devops-frontend"
-        BACKEND_IMAGE = "niroz14/devops-backend"
+        BACKEND_IMAGE  = "niroz14/devops-backend"
     }
 
     stages {
 
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/nirobnk/devopsproject.git'
+                git branch: 'main',
+                    url: 'https://github.com/nirobnk/devopsproject.git'
             }
         }
 
