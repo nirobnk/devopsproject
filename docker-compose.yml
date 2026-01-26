@@ -1,30 +1,45 @@
 version: "3.9"
 
 services:
+  # --- Backend ---
   backend:
     build:
-      context: .
-      dockerfile: Dockerfile.backend
-    container_name: employee-backend
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: devops-backend
     ports:
       - "8080:8080"
-    networks:
-      - app-network
-    restart: always
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/devopsdb
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=1234
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    depends_on:
+      - db
 
+  # --- Frontend ---
   frontend:
     build:
-      context: .
-      dockerfile: Dockerfile.frontend
-    container_name: employee-frontend
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: devops-frontend
     ports:
       - "5173:5173"
-    networks:
-      - app-network
     depends_on:
       - backend
-    restart: always
 
-networks:
-  app-network:
-    driver: bridge
+  # --- MySQL Database ---
+  db:
+    image: mysql:8.0
+    container_name: devops-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_DATABASE: devopsdb
+    volumes:
+      - mysql_data:/var/lib/mysql
+    ports:
+      - "3307:3306"
+
+volumes:
+  mysql_data:
