@@ -13,7 +13,6 @@ pipeline {
                 echo "PATH is: $PATH"
                 which docker
                 docker --version
-                docker info
                 '''
             }
         }
