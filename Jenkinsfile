@@ -1,10 +1,5 @@
 pipeline {
-    agent {
-        docker {
-            image 'docker:26.1.0'
-            args '-v /var/run/docker.sock:/var/run/docker.sock'
-        }
-    }
+    agent any
 
     environment {
         DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials')
@@ -13,6 +8,12 @@ pipeline {
     }
 
     stages {
+
+        stage('Verify Docker') {
+            steps {
+                sh 'docker --version'
+            }
+        }
 
         stage('Checkout') {
             steps {
