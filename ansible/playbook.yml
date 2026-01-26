@@ -1,7 +1,6 @@
 - name: Deploy app using Docker Compose
   hosts: web
   become: true
-
   tasks:
     - name: Install required packages
       apt:
@@ -34,8 +33,20 @@
       shell: docker-compose -f docker-compose.prod.yml pull
       args:
         chdir: /home/ubuntu
+      register: pull_result
+      failed_when: false
 
-    - name: Restart containers
+    - name: Show pull result
+      debug:
+        var: pull_result
+
+    - name: Stop existing containers
+      shell: docker-compose -f docker-compose.prod.yml down
+      args:
+        chdir: /home/ubuntu
+      ignore_errors: yes
+
+    - name: Start containers
       shell: docker-compose -f docker-compose.prod.yml up -d
       args:
         chdir: /home/ubuntu
