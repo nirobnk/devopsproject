@@ -1,11 +1,16 @@
-variable "aws_region" {
-  default = "ap-south-1"
+variable "key_name" {
+  description = "AWS EC2 key pair name"
+  type        = string
+  default     = "devops-singapore"
 }
 
 variable "instance_type" {
-  default = "t3.micro"
+  description = "EC2 instance type"
+  type        = string
+  default     = "t2.micro"
 }
 
-variable "key_name" {
-  description = "EC2 key pair name"
+variable "allowed_ssh_ip" {
+  description = "Your public IP for SSH access"
+  type        = string
 }
