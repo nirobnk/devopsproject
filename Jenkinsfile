@@ -44,17 +44,19 @@ pipeline {
         }
         stage('Deploy to EC2 using Ansible') {
             steps {
-                dir('ansible') {
-                    sh '''
-                    # Check where ansible is located
-                    ANS_PATH=$(which ansible-playbook || echo "/opt/homebrew/bin/ansible-playbook")
-                    if [ -f "$ANS_PATH" ]; then
-                        "$ANS_PATH" -i inventory playbook.yml
-                    else
-                        echo "Ansible not found at $ANS_PATH. Trying manual PATH search..."
-                        ansible-playbook -i inventory playbook.yml
-                    fi
-                    '''
+                sshagent(['ec2-ssh-key']) {
+                    dir('ansible') {
+                        sh '''
+                        # Check where ansible is located
+                        ANS_PATH=$(which ansible-playbook || echo "/opt/homebrew/bin/ansible-playbook")
+                        if [ -f "$ANS_PATH" ]; then
+                            "$ANS_PATH" -i inventory playbook.yml
+                        else
+                            echo "Ansible not found at $ANS_PATH. Trying manual PATH search..."
+                            ansible-playbook -i inventory playbook.yml
+                        fi
+                        '''
+                    }
                 }
             }
         }

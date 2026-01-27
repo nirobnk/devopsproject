@@ -1,2 +1,2 @@
 [web]
-18.143.135.55 ansible_user=ubuntu ansible_ssh_private_key_file=~/.ssh/devops-singapore.pem
+13.214.25.167 ansible_user=ubuntu
