@@ -4,7 +4,7 @@ pipeline {
         DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials')
         FRONTEND_IMAGE = "niroz14/devops-frontend"
         BACKEND_IMAGE  = "niroz14/devops-backend"
-        PATH = "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+        PATH = "/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
     }
     stages {
         stage('Verify Docker') {
