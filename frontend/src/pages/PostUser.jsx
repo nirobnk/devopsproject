@@ -32,14 +32,17 @@ function PostUser() {
     }
 
     try {
-      const response = await fetch("http://localhost:8080/api/v1/employee", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/v1/employee`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(formData),
         },
-        body: JSON.stringify(formData),
-      });
+      );
       if (!response.ok) {
         const errorText = await response.text();
         console.error("Error:", errorText);

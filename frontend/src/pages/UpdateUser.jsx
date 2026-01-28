@@ -23,12 +23,12 @@ function UpdateUser() {
     const fetchEmployee = async () => {
       try {
         const response = await fetch(
-          `http://localhost:8080/api/v1/employee/${id}`,
+          `${import.meta.env.VITE_API_URL}/api/v1/employee/${id}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
-          }
+          },
         );
         const data = await response.json();
         setFormData(data);
@@ -44,7 +44,7 @@ function UpdateUser() {
 
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/employee/${id}`,
+        `${import.meta.env.VITE_API_URL}/api/v1/employee/${id}`,
         {
           method: "PATCH",
           headers: {
@@ -52,7 +52,7 @@ function UpdateUser() {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
           body: JSON.stringify(formData),
-        }
+        },
       );
       const data = await response.json();
       console.log("User updated: ", data);

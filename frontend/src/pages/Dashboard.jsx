@@ -8,11 +8,14 @@ function Dashboard() {
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
-        const response = await fetch("http://localhost:8080/api/v1/employee", {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+        const response = await fetch(
+          `${import.meta.env.VITE_API_URL}/api/v1/employee`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
           },
-        });
+        );
         const data = await response.json();
         setEmployees(data); // ✅ Don't forget to set state
       } catch (error) {
@@ -25,21 +28,21 @@ function Dashboard() {
   const handleDelete = async (employeeId) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/employee/${employeeId}`,
+        `${import.meta.env.VITE_API_URL}/api/v1/employee/${employeeId}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
           method: "DELETE",
-        }
+        },
       );
       if (response.ok) {
         setEmployees(
           (
-            prevEmployees //react usually set reference of latest state to the function argument use in Set method in useState
+            prevEmployees, //react usually set reference of latest state to the function argument use in Set method in useState
           ) =>
             //so preEmployee point to the employees in useState
-            prevEmployees.filter((emp) => emp.id != employeeId)
+            prevEmployees.filter((emp) => emp.id != employeeId),
         ); //in filter method use callback function to get boolean value if it is true it store value in new array otherwise it exclude the value
         //callback function usually return true or false
       }

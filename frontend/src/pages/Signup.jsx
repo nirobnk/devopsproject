@@ -14,30 +14,33 @@ export default function Signup() {
   };
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  try {
-    const response = await fetch("http://localhost:8080/api/v1/auth/signup", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    });
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/v1/auth/signup`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        },
+      );
 
-    if (!response.ok) {
-      const errorData = await response.text();
-      alert("Signup failed: " + errorData);
-      return;
+      if (!response.ok) {
+        const errorData = await response.text();
+        alert("Signup failed: " + errorData);
+        return;
+      }
+
+      alert("Signup successful! Please log in.");
+      window.location.href = "/"; // or use navigate("/login") if you're using react-router
+    } catch (err) {
+      console.error("Signup error:", err);
+      alert("An error occurred. Please try again.");
     }
-
-    alert("Signup successful! Please log in.");
-    window.location.href = "/"; // or use navigate("/login") if you're using react-router
-  } catch (err) {
-    console.error("Signup error:", err);
-    alert("An error occurred. Please try again.");
-  }
-};
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
@@ -47,7 +50,9 @@ export default function Signup() {
         </h2>
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label className="block mb-1 font-medium text-gray-700">Full Name</label>
+            <label className="block mb-1 font-medium text-gray-700">
+              Full Name
+            </label>
             <input
               type="text"
               name="fullName"
@@ -59,7 +64,9 @@ export default function Signup() {
             />
           </div>
           <div>
-            <label className="block mb-1 font-medium text-gray-700">Email</label>
+            <label className="block mb-1 font-medium text-gray-700">
+              Email
+            </label>
             <input
               type="email"
               name="email"
@@ -71,7 +78,9 @@ export default function Signup() {
             />
           </div>
           <div>
-            <label className="block mb-1 font-medium text-gray-700">Password</label>
+            <label className="block mb-1 font-medium text-gray-700">
+              Password
+            </label>
             <input
               type={showPassword ? "text" : "password"}
               name="password"
@@ -83,16 +92,16 @@ export default function Signup() {
             />
           </div>
           <div className="mt-2">
-              <label className="text-sm text-gray-600 flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  checked={showPassword}
-                  onChange={() => setShowPassword(!showPassword)}
-                />
-                Show Password
-              </label>
-            </div>
-          
+            <label className="text-sm text-gray-600 flex items-center gap-2">
+              <input
+                type="checkbox"
+                checked={showPassword}
+                onChange={() => setShowPassword(!showPassword)}
+              />
+              Show Password
+            </label>
+          </div>
+
           <button
             type="submit"
             className="w-full bg-green-600 text-white py-2 rounded-md hover:bg-green-700 transition"
