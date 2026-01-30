@@ -3,8 +3,9 @@ import { Routes, Route } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
 import Header from "./pages/Header";
 import NoMatch from "./pages/NoMatch";
-import PostUser from "./pages/PostUser";
-import UpdateUser from "./pages/UpdateUser";
+import BookAppointment from "./pages/BookAppointment";
+import UpdateAppointment from "./pages/UpdateAppointment";
+import Doctors from "./pages/Doctors";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import PrivateRoute from "./utils/PrivateRoute";
@@ -25,18 +26,26 @@ function App() {
           }
         />
         <Route
-          path="/postemployee"
+          path="/bookappointment"
           element={
             <PrivateRoute>
-              <PostUser />
+              <BookAppointment />
             </PrivateRoute>
           }
         />
         <Route
-          path="/employee/:id"
+          path="/doctors"
           element={
             <PrivateRoute>
-              <UpdateUser />
+              <Doctors />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/appointment/:id"
+          element={
+            <PrivateRoute>
+              <UpdateAppointment />
             </PrivateRoute>
           }
         />

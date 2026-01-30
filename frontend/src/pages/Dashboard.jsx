@@ -2,14 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 function Dashboard() {
-  const [employees, setEmployees] = useState([]);
+  const [appointments, setAppointments] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchEmployees = async () => {
+    const fetchAppointments = async () => {
       try {
         const response = await fetch(
-          `${import.meta.env.VITE_API_URL}/api/v1/employee`,
+          `${import.meta.env.VITE_API_URL}/api/v1/appointment`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -17,18 +17,18 @@ function Dashboard() {
           },
         );
         const data = await response.json();
-        setEmployees(data); // ✅ Don't forget to set state
+        setAppointments(data);
       } catch (error) {
-        console.error("Error fetching employees", error.message);
+        console.error("Error fetching appointments", error.message);
       }
     };
-    fetchEmployees();
+    fetchAppointments();
   }, []);
 
-  const handleDelete = async (employeeId) => {
+  const handleDelete = async (appointmentId) => {
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/v1/employee/${employeeId}`,
+        `${import.meta.env.VITE_API_URL}/api/v1/appointment/${appointmentId}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -37,63 +37,84 @@ function Dashboard() {
         },
       );
       if (response.ok) {
-        setEmployees(
-          (
-            prevEmployees, //react usually set reference of latest state to the function argument use in Set method in useState
-          ) =>
-            //so preEmployee point to the employees in useState
-            prevEmployees.filter((emp) => emp.id != employeeId),
-        ); //in filter method use callback function to get boolean value if it is true it store value in new array otherwise it exclude the value
-        //callback function usually return true or false
+        setAppointments((prevAppointments) =>
+          prevAppointments.filter((apt) => apt.id != appointmentId),
+        );
       }
-      //setEmployees(employees.filter(emp => emp.id !== employeeId)); this is direct method it not suitable for used cuz it makes some bugs sometimes
-      console.log(`Employee with ID ${employeeId} deleted successfully`);
+      console.log(`Appointment with ID ${appointmentId} deleted successfully`);
     } catch (error) {
-      console.error("Error deleting employee :", error.message);
+      console.error("Error deleting appointment:", error.message);
     }
   };
 
-  const handleUpdate = (employeeId) => {
-    navigate(`/employee/${employeeId}`);
+  const handleUpdate = (appointmentId) => {
+    navigate(`/appointment/${appointmentId}`);
+  };
+
+  const formatDateTime = (dateTime) => {
+    return new Date(dateTime).toLocaleString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
   };
 
   return (
     <div className="min-h-screen bg-gray-100 p-6">
-      {/* Page Title */}
-      <h1 className="text-3xl font-bold text-gray-800 mb-6">Employees</h1>
+      <h1 className="text-3xl font-bold text-teal-700 mb-6">My Appointments</h1>
 
-      {/* Table Header */}
-      <div className="grid grid-cols-5 bg-gray-200 p-3 rounded-md font-semibold text-gray-700">
-        <div>Name</div>
-        <div>Email</div>
-        <div>Phone</div>
-        <div>Department</div>
+      <div className="grid grid-cols-6 bg-teal-100 p-3 rounded-md font-semibold text-gray-700">
+        <div>Patient Name</div>
+        <div>Doctor</div>
+        <div>Date & Time</div>
+        <div>Status</div>
+        <div>Reason</div>
         <div>Action</div>
       </div>
 
-      {/* Table Body */}
       <div className="space-y-2 mt-2">
-        {employees.map((employee) => (
+        {appointments.map((appointment) => (
           <div
-            key={employee.id}
-            className="grid grid-cols-5 bg-white shadow-md p-3 rounded-lg hover:shadow-lg transition"
+            key={appointment.id}
+            className="grid grid-cols-6 bg-white shadow-md p-3 rounded-lg hover:shadow-lg transition"
           >
-            <div className="font-medium text-gray-800">{employee.name}</div>
-            <div className="text-gray-600">{employee.email}</div>
-            <div className="text-gray-600">{employee.phone}</div>
-            <div className="text-gray-600">{employee.department}</div>
+            <div className="font-medium text-gray-800">
+              {appointment.patientName}
+            </div>
+            <div className="text-gray-600">
+              {appointment.doctor?.name || "N/A"}
+            </div>
+            <div className="text-gray-600">
+              {formatDateTime(appointment.appointmentDateTime)}
+            </div>
+            <div>
+              <span
+                className={`px-2 py-1 rounded text-xs ${
+                  appointment.status === "Scheduled"
+                    ? "bg-blue-100 text-blue-800"
+                    : appointment.status === "Completed"
+                      ? "bg-green-100 text-green-800"
+                      : "bg-red-100 text-red-800"
+                }`}
+              >
+                {appointment.status}
+              </span>
+            </div>
+            <div className="text-gray-600">{appointment.reason || "-"}</div>
             <div className="flex gap-2">
               <button
-                onClick={() => handleUpdate(employee.id)}
-                className="px-3 py-1 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
+                onClick={() => handleUpdate(appointment.id)}
+                className="px-3 py-1 bg-teal-500 text-white rounded-lg hover:bg-teal-600 transition"
               >
                 Update
               </button>
               <button
-                onClick={() => handleDelete(employee.id)}
+                onClick={() => handleDelete(appointment.id)}
                 className="px-3 py-1 bg-red-500 text-white rounded-lg hover:bg-red-600 transition"
               >
-                Delete
+                Cancel
               </button>
             </div>
           </div>

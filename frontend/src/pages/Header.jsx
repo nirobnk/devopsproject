@@ -12,22 +12,28 @@ function Header() {
   };
 
   return (
-    <div className="flex justify-between items-center bg-blue-600 text-white px-6 py-4 shadow-md">
+    <div className="flex justify-between items-center bg-teal-600 text-white px-6 py-4 shadow-md">
       <div className="text-2xl font-bold">
-        <Link to="/dashboard">Employee Management System</Link>
+        <Link to="/dashboard">🏥 Medical Center Booking</Link>
       </div>
       <div className="flex items-center space-x-6">
         <Link
           to="/dashboard"
           className="hover:text-gray-200 transition-colors duration-200"
         >
-          Employees
+          Appointments
         </Link>
         <Link
-          to="/postemployee"
+          to="/bookappointment"
           className="hover:text-gray-200 transition-colors duration-200"
         >
-          Add Employee
+          Book Appointment
+        </Link>
+        <Link
+          to="/doctors"
+          className="hover:text-gray-200 transition-colors duration-200"
+        >
+          Doctors
         </Link>
         <button
           onClick={handleLogout}
