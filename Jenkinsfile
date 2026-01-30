@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials')
+        DOCKERHUB_CREDENTIALS = credentials('dockerhub-creds')
         FRONTEND_IMAGE = "niroz14/devops-frontend"
         BACKEND_IMAGE  = "niroz14/devops-backend"
         PATH = "/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
@@ -42,6 +42,7 @@ pipeline {
                 '''
             }
         }
+        /*
         stage('Deploy to EC2 using Ansible') {
             steps {
                 sshagent(['ec2-ssh-key']) {
@@ -59,11 +60,13 @@ pipeline {
                     }
                 }
             }
-        }
+        }*/
     }
     post {
         always {
-            sh 'docker logout || true'
+            node{
+                sh 'docker logout || true'
+            }
         }
         success {
             echo '🚀 CI/CD Pipeline completed successfully!'
