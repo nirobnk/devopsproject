@@ -42,7 +42,6 @@ pipeline {
                 '''
             }
         }
-        /*
         stage('Deploy to EC2 using Ansible') {
             steps {
                 sshagent(['ec2-ssh-key']) {
@@ -60,7 +59,7 @@ pipeline {
                     }
                 }
             }
-        }*/
+        }
     }
     post {
         always {
