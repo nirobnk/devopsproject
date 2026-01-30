@@ -64,9 +64,7 @@ pipeline {
     }
     post {
         always {
-            node{
-                sh 'docker logout || true'
-            }
+            sh 'docker logout || true'   
         }
         success {
             echo '🚀 CI/CD Pipeline completed successfully!'
