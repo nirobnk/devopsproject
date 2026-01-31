@@ -43,11 +43,17 @@ export default function Signup() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
-        <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">
-          Create an Account
-        </h2>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-teal-50 to-blue-50">
+      <div className="bg-white p-8 rounded-lg shadow-xl w-full max-w-md border-t-4 border-teal-600">
+        <div className="text-center mb-6">
+          <div className="text-5xl mb-2">🏥</div>
+          <h2 className="text-3xl font-bold text-teal-700">
+            Join Medical Center
+          </h2>
+          <p className="text-gray-600 mt-2">
+            Create your account to get started
+          </p>
+        </div>
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
             <label className="block mb-1 font-medium text-gray-700">
@@ -59,7 +65,7 @@ export default function Signup() {
               value={formData.fullName}
               onChange={handleChange}
               required
-              className="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-400 focus:outline-none"
+              className="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-teal-400 focus:outline-none"
               placeholder="John Doe"
             />
           </div>
@@ -73,7 +79,7 @@ export default function Signup() {
               value={formData.email}
               onChange={handleChange}
               required
-              className="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-400 focus:outline-none"
+              className="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-teal-400 focus:outline-none"
               placeholder="example@email.com"
             />
           </div>
@@ -87,7 +93,7 @@ export default function Signup() {
               value={formData.password}
               onChange={handleChange}
               required
-              className="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-400 focus:outline-none"
+              className="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-teal-400 focus:outline-none"
               placeholder="••••••••"
             />
           </div>
@@ -104,14 +110,14 @@ export default function Signup() {
 
           <button
             type="submit"
-            className="w-full bg-green-600 text-white py-2 rounded-md hover:bg-green-700 transition"
+            className="w-full bg-teal-600 text-white py-2.5 rounded-md hover:bg-teal-700 transition font-semibold shadow-md"
           >
             Sign Up
           </button>
         </form>
         <p className="mt-4 text-sm text-center text-gray-600">
           Already have an account?{" "}
-          <a href="/" className="text-blue-600 hover:underline">
+          <a href="/" className="text-teal-600 hover:underline font-semibold">
             Login
           </a>
         </p>
