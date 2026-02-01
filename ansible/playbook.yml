@@ -58,6 +58,10 @@
         owner: ubuntu
         group: ubuntu
 
+    - name: Clean up Docker resources
+      shell: docker system prune -a --volumes -f
+      ignore_errors: yes
+
     - name: Pull latest Docker images
       shell: docker-compose -f docker-compose.prod.yml pull
       args:
