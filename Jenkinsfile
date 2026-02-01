@@ -42,6 +42,15 @@ pipeline {
                 '''
             }
         }
+        stage('Cleanup Docker Images') {
+            steps {
+                sh '''
+                docker rmi $BACKEND_IMAGE:latest || true
+                docker rmi $FRONTEND_IMAGE:latest || true
+                docker system prune -f
+                '''
+            }
+        }
         stage('Deploy to EC2 using Ansible') {
             steps {
                 sshagent(['ec2-ssh-key']) {
