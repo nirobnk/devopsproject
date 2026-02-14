@@ -44,7 +44,7 @@ export default function Login() {
       <div className="bg-white p-8 rounded-lg shadow-xl w-full max-w-md border-t-4 border-teal-600">
         <div className="text-center mb-6">
           <div className="text-5xl mb-2">🏥</div>
-          <h2 className="text-3xl font-bold text-teal-700">Medical Centers</h2>
+          <h2 className="text-3xl font-bold text-teal-700">KUMARASINGHE H.G.B.N.</h2>
           <p className="text-gray-600 mt-2">Sign in to book your appointment</p>
         </div>
         <form onSubmit={handleSubmit} className="space-y-5">
